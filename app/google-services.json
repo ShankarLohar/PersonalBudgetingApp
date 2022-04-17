@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "354071303991",
+    "project_id": "sliapersonalbudgetingapp",
+    "storage_bucket": "sliapersonalbudgetingapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:354071303991:android:18f69824f23e85563e6cb2",
+        "android_client_info": {
+          "package_name": "com.shankarlohar.personalbudgetingapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "354071303991-hkuvg3fg4a50qic7ntbbhgn4eaapm7fs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.shankarlohar.personalbudgetingapp",
+            "certificate_hash": "000b32b770b7b1c15f03f5f5180bfb3a1d21b2f4"
+          }
+        },
+        {
+          "client_id": "354071303991-m5tfut6gbu9p8s038hstn8m5fm5qdqe9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDne5HuOBQxjEltaK4Xx9hFZoNsu-bJPw4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "354071303991-m5tfut6gbu9p8s038hstn8m5fm5qdqe9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
