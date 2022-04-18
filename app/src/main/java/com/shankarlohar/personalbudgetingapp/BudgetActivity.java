@@ -52,6 +52,10 @@ public class BudgetActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressDialog loader;
 
+    private String post_key = "";
+    private String item = "";
+    private int amount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -181,13 +185,22 @@ public class BudgetActivity extends AppCompatActivity {
                 .build();
 
         FirebaseRecyclerAdapter<Data, MyViewHolder> adapter = new FirebaseRecyclerAdapter<Data, MyViewHolder>(options) {
+
+            @NonNull
             @Override
-            protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, @NonNull Data model) {
+            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.retrieve_layout, parent,false);
+                return new MyViewHolder(view);
+            }
+            @Override
+            protected void onBindViewHolder(@NonNull MyViewHolder holder, int position, Data model) {
                 holder.setDate("On: "+model.getDate());
                 holder.setItemAmount("Allocated amount: $"+model.getAmount());
+
                 holder.setItemName("BudgetItem: "+model.getItem());
 
                 holder.notes.setVisibility(View.GONE);
+
 
                 switch (model.getItem()){
                     case "Transport":
@@ -221,13 +234,17 @@ public class BudgetActivity extends AppCompatActivity {
                         holder.imageView.setImageResource(R.drawable.ic_other);
                         break;
                 }
-            }
 
-            @NonNull
-            @Override
-            public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.retrieve_layout, parent,false);
-                return null;
+                holder.mView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        post_key = getRef(holder.getAdapterPosition()).getKey();
+                        item = model.getItem();
+                        amount = model.getAmount();
+                        updateData();
+                    }
+                });
+
             }
         };
 
@@ -235,7 +252,7 @@ public class BudgetActivity extends AppCompatActivity {
         adapter.startListening();
         adapter.notifyDataSetChanged();
     }
-    public class MyViewHolder extends RecyclerView.ViewHolder{
+    public static class MyViewHolder extends RecyclerView.ViewHolder{
         View mView;
         public ImageView imageView;
         public TextView notes;
@@ -259,5 +276,75 @@ public class BudgetActivity extends AppCompatActivity {
             item.setText(itemName);
         }
 
+    }
+    private void updateData(){
+        AlertDialog.Builder myDialog = new AlertDialog.Builder(this);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View mView = inflater.inflate(R.layout.update_layout, null);
+
+        myDialog.setView(mView);
+        final AlertDialog dialog = myDialog.create();
+
+        final TextView mItem = mView.findViewById(R.id.itemName);
+        final EditText mAmount = mView.findViewById(R.id.amount);
+        final EditText mNotes = mView.findViewById(R.id.note);
+
+        mNotes.setVisibility(View.GONE);
+
+        mItem.setText(item);
+
+        mAmount.setText(String.valueOf(amount));
+        mAmount.setSelection(String.valueOf(amount).length());
+
+        Button delBut = mView.findViewById(R.id.btnDelete);
+        Button btnUpdate = mView.findViewById(R.id.btnUpdate);
+
+        btnUpdate.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                amount = Integer.parseInt(mAmount.getText().toString());
+                SimpleDateFormat dateFormat = new SimpleDateFormat("DD.MM.yyyy");
+                Calendar cal = Calendar.getInstance();
+                String date = dateFormat.format(cal.getTime());
+
+                MutableDateTime epoch = new MutableDateTime();
+                epoch.setDate(0);
+                DateTime now = new DateTime();
+                Months months = Months.monthsBetween(epoch, now);
+
+                Data data = new Data(item, date, post_key, null, amount, months.getMonths());
+                budgetRef.child(post_key).setValue(data).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(BudgetActivity.this, "Updated successfully", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(BudgetActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialog.dismiss();
+            }
+        });
+
+        delBut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                budgetRef.child(post_key).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            Toast.makeText(BudgetActivity.this, "Deleted successfully", Toast.LENGTH_SHORT).show();
+                        }else{
+                            Toast.makeText(BudgetActivity.this, task.getException().toString(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
     }
 }
