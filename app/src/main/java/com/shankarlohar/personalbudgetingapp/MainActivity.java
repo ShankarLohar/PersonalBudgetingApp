@@ -9,7 +9,7 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity {
 
-    private CardView budgetCardView, todayCardView, weekCardView, monthCardView;
+    private CardView budgetCardView, todayCardView, weekCardView, monthCardView, analyticsCardView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
         todayCardView = findViewById(R.id.todayCardview);
         weekCardView = findViewById(R.id.weekCardview);
         monthCardView = findViewById(R.id.monthCardview);
+        analyticsCardView = findViewById(R.id.analyticsCardview);
 
         budgetCardView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +51,14 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, WeekSpendingActivity.class);
                 intent.putExtra("type","month");
                 startActivity(intent);
+            }
+        });
+
+        analyticsCardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(MainActivity.this, ChooseAnalyticActivity.class));
+
             }
         });
 

@@ -77,7 +77,7 @@ public class WeekSpendingActivity extends AppCompatActivity {
                 readMonthSpendindItems();
             }
         }
-        
+
 
 
     }
