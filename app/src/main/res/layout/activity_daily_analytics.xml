@@ -13,7 +13,7 @@
         android:orientation="vertical">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/my_Feed_Toolbar"
+            android:id="@+id/my_daily_Feed_Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#000"
@@ -838,7 +838,7 @@
 <!--                        android:text="Total Spent: $ 0"-->
 <!--                        android:textColor="#000"-->
 <!--                        android:textStyle="bold"-->
-<!--                        android:id="@+id/monthSpentAmount"-->
+<!--                        android:id="@+id/dailySpentAmount"-->
 <!--                        android:textSize="15sp"/>-->
 
 <!--                    <LinearLayout-->
@@ -853,10 +853,10 @@
 <!--                            android:text="status"-->
 <!--                            android:textSize="12sp"-->
 <!--                            android:textColor="#000"-->
-<!--                            android:id="@+id/monthRatioSpending"/>-->
+<!--                            android:id="@+id/dailyRatioSpending"/>-->
 
 <!--                        <ImageView-->
-<!--                            android:id="@+id/monthRatioSpending_Image"-->
+<!--                            android:id="@+id/dailyRatioSpending_Image"-->
 <!--                            android:layout_width="0dp"-->
 <!--                            android:layout_height="10dp"-->
 <!--                            android:layout_weight="1"-->
